@@ -6,7 +6,7 @@ const sectionReveal = {
   initial: { opacity: 0, y: 12 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
 };
 
 const AboutSection = () => {
