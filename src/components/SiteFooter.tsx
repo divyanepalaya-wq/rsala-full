@@ -1,10 +1,10 @@
+import logo from "@/assets/r-sala-logo.png";
+
 const SiteFooter = () => {
   return (
     <footer className="bg-foreground py-12">
       <div className="container mx-auto px-6 text-center">
-        <p className="text-2xl font-bold tracking-tight text-primary-foreground mb-2">
-          r-<span className="text-primary">sala</span>
-        </p>
+        <img src={logo} alt="r-sala logo" className="h-14 w-auto mx-auto mb-2" />
         <p className="text-sm text-primary-foreground/60 mb-6">
           A Space for Sound, Story, and Spirit.
         </p>

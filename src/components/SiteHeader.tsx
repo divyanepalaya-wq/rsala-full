@@ -14,8 +14,8 @@ const SiteHeader = () => {
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
-        <a href="/" className="text-xl font-bold tracking-tight">
-          r-<span className="text-primary">sala</span>
+        <a href="/" className="flex items-center">
+          <img src={logo} alt="r-sala logo" className="h-10 w-auto" />
         </a>
 
         {/* Desktop nav */}
