@@ -11,7 +11,7 @@ const sectionReveal = {
 };
 
 const VENUE_MAP_URL =
-  "https://www.google.com/maps/place//data=!4m2!3m1!1s0x39eb19a61a019c31:0xb573ee5898787271?source=g.page.default";
+  "https://maps.app.goo.gl/j1RMyeUB19DXYqor7";
 
 const AboutSection = () => {
   return (
