@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import logo from "@/assets/r-sala-logo.png";
 
 const navLinks = [
   { href: "#about", label: "About" },
   { href: "#pricing", label: "Pricing" },
-  { href: "#booking", label: "Book Now" },
 ];
 
 const SiteHeader = () => {
@@ -13,9 +13,9 @@ const SiteHeader = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="container mx-auto px-6 flex items-center justify-between h-16">
+      <div className="container mx-auto px-6 flex items-center justify-between h-18">
         <a href="/" className="flex items-center">
-          <img src={logo} alt="r-sala logo" className="h-10 w-auto" />
+          <img src={logo} alt="r-sala logo" className="h-14 w-auto" />
         </a>
 
         {/* Desktop nav */}
@@ -29,6 +29,9 @@ const SiteHeader = () => {
               {label}
             </a>
           ))}
+          <Button asChild size="sm">
+            <a href="#booking">Book Now</a>
+          </Button>
         </nav>
 
         {/* Mobile toggle */}
@@ -54,6 +57,9 @@ const SiteHeader = () => {
               {label}
             </a>
           ))}
+          <Button asChild size="sm" className="w-full">
+            <a href="#booking" onClick={() => setMobileOpen(false)}>Book Now</a>
+          </Button>
         </nav>
       )}
     </header>
