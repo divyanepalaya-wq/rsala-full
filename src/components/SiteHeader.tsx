@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/r-sala-logo.png";
 
 const navLinks = [
   { href: "#about", label: "About" },
