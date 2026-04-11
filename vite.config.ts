@@ -18,4 +18,17 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id: string) => {
+          if (id.includes("node_modules/firebase")) return "vendor-firebase";
+          if (id.includes("node_modules/recharts") || id.includes("node_modules/d3-")) return "vendor-charts";
+          if (id.includes("node_modules/framer-motion")) return "vendor-motion";
+          if (id.includes("node_modules/react") || id.includes("node_modules/react-dom") || id.includes("node_modules/react-router-dom")) return "vendor-react";
+          if (id.includes("node_modules/@radix-ui")) return "vendor-radix";
+        },
+      },
+    },
+  },
 }));

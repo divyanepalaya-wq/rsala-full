@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-auditorium.jpg";
+import { scrollToSection } from "@/components/SiteHeader";
 
 const sectionReveal = {
   initial: { opacity: 0, y: 12 },
@@ -10,8 +11,8 @@ const sectionReveal = {
 
 const HeroSection = () => {
   return (
-    <section className="min-h-[80vh] flex items-center bg-background">
-      <div className="container mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+    <section className="min-h-fit md:min-h-[80vh] flex items-center bg-background">
+      <div className="container mx-auto px-6 py-12 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
         <motion.div {...sectionReveal} className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1]">
             A Space for Sound,{" "}
@@ -20,19 +21,19 @@ const HeroSection = () => {
           <p className="text-lg text-muted-foreground max-w-lg">
             Kathmandu's premier 70-pax intimate auditorium, managed by Nepa-laya.
           </p>
-          <div className="flex gap-4 pt-2">
-            <a
-              href="#booking"
-              className="inline-flex items-center justify-center min-h-[44px] px-8 rounded-lg bg-primary text-primary-foreground font-medium transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated active:scale-95"
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              onClick={() => scrollToSection("#booking")}
+              className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] px-8 rounded-lg bg-primary text-primary-foreground font-medium transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated active:scale-95"
             >
               Request Booking
-            </a>
-            <a
-              href="#pricing"
-              className="inline-flex items-center justify-center min-h-[44px] px-8 rounded-lg bg-secondary text-secondary-foreground font-medium transition-all duration-200 hover:bg-accent"
+            </button>
+            <button
+              onClick={() => scrollToSection("#pricing")}
+              className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] px-8 rounded-lg bg-secondary text-secondary-foreground font-medium transition-all duration-200 hover:bg-accent"
             >
               View Pricing
-            </a>
+            </button>
           </div>
         </motion.div>
         <motion.div

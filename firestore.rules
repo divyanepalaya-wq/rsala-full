@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /bookings/{docId} {
+      // Public (unauthenticated) can only create pending requests from the public form
+      allow create: if request.auth == null
+        && request.resource.data.status == "pending"
+        && request.resource.data.is_manual == false
+        && request.resource.data.keys().hasAll([
+             "full_name","email","event_type","booking_date",
+             "status","is_manual","notes"
+           ]);
+
+      // Authenticated admin can do anything (read, create, update, delete)
+      allow read, write: if request.auth != null;
+    }
+  }
+}
