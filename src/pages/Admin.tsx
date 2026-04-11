@@ -18,12 +18,11 @@ import {
 import {
   LogOut, Plus, Download, Check, X, Trash2, Calendar,
   Users, Clock, Loader2, CreditCard, Ban, Search,
-  TrendingUp, DollarSign, ChevronDown, Globe,
+  TrendingUp, DollarSign, ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { auth, db } from "@/lib/firebase";
-import CustomizationPanel from "@/components/admin/CustomizationPanel";
 import {
   exportToCSV, getPaletiDatesForYear, calculateEstimatedCost,
   getServicesBreakdown,
@@ -571,7 +570,6 @@ const DeleteConfirmModal = ({
 // ─── Admin Dashboard ──────────────────────────────────────────────────────────
 
 const AdminDashboard = ({ user }: { user: User }) => {
-  const [activeView, setActiveView] = useState<"bookings" | "website">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState<"all" | BookingStatus>("all");
@@ -754,23 +752,6 @@ const AdminDashboard = ({ user }: { user: User }) => {
             <span className="text-primary-foreground/50 text-sm hidden sm:block">Admin</span>
           </div>
           <div className="flex items-center gap-3">
-            {/* View toggle */}
-            <div className="flex items-center bg-primary-foreground/10 rounded-lg p-0.5 gap-0.5">
-              <button
-                onClick={() => setActiveView("bookings")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeView === "bookings" ? "bg-primary-foreground/20 text-primary-foreground" : "text-primary-foreground/50 hover:text-primary-foreground/70"}`}
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Bookings</span>
-              </button>
-              <button
-                onClick={() => setActiveView("website")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeView === "website" ? "bg-primary-foreground/20 text-primary-foreground" : "text-primary-foreground/50 hover:text-primary-foreground/70"}`}
-              >
-                <Globe className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Website</span>
-              </button>
-            </div>
             <span className="text-xs text-primary-foreground/40 hidden md:block">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={() => signOut(auth)}
               className="text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10">
@@ -781,8 +762,6 @@ const AdminDashboard = ({ user }: { user: User }) => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        {activeView === "website" && <CustomizationPanel />}
-        {activeView === "bookings" && <>
 
         {/* Booking Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1006,7 +985,6 @@ const AdminDashboard = ({ user }: { user: User }) => {
         </div>
       </main>
 
-        </>}
       <AddBookingDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} approvedDates={approvedDates} />
       {detailBooking && (
         <BookingDetailModal

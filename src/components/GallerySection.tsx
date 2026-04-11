@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useSettings } from "@/contexts/SettingsContext";
 
 const sectionReveal = {
   initial: { opacity: 0, y: 12 },
@@ -8,9 +7,17 @@ const sectionReveal = {
   transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
 };
 
-const GallerySection = () => {
-  const { gallery } = useSettings();
+const images = [
+  { src: "/gallery/paleti-session.jpg", alt: "Paleti music session at r-sala", span: true },
+  { src: "/gallery/auditorium-side.jpg", alt: "r-sala auditorium stage and lighting" },
+  { src: "/gallery/IMG_0515.jpg", alt: "r-sala venue photo 1" },
+  { src: "/gallery/IMG_0812.jpg", alt: "r-sala venue photo 2" },
+  { src: "/gallery/IMG_4215.jpg", alt: "r-sala venue photo 3" },
+  { src: "/gallery/IMG_4675.jpg", alt: "r-sala venue photo 4" },
+  { src: "/gallery/IMG_8265.jpg", alt: "r-sala venue photo 5" },
+];
 
+const GallerySection = () => {
   return (
     <section id="gallery" className="py-14 md:py-24 bg-background">
       <div className="container mx-auto px-6">
@@ -22,15 +29,15 @@ const GallerySection = () => {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {gallery.map((img, i) => (
+          {images.map((img, i) => (
             <motion.div
-              key={img.id}
+              key={img.src}
               {...sectionReveal}
               transition={{ ...sectionReveal.transition, delay: i * 0.07 }}
               className={`rounded-2xl overflow-hidden shadow-soft ${img.span ? "col-span-2" : ""}`}
             >
               <img
-                src={img.url}
+                src={img.src}
                 alt={img.alt}
                 className={`w-full object-cover ${img.span ? "aspect-[16/9]" : "aspect-square"}`}
                 loading={i === 0 ? "eager" : "lazy"}

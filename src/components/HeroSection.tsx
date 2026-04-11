@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-auditorium.jpg";
 import { scrollToSection } from "@/components/SiteHeader";
-import { useSettings } from "@/contexts/SettingsContext";
 
 const sectionReveal = {
   initial: { opacity: 0, y: 12 },
@@ -11,7 +10,6 @@ const sectionReveal = {
 };
 
 const HeroSection = () => {
-  const { content } = useSettings();
   return (
     <section className="min-h-fit md:min-h-[80vh] flex items-center bg-background">
       <div className="container mx-auto px-6 py-12 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
@@ -20,7 +18,9 @@ const HeroSection = () => {
             A Space for Sound,{" "}
             <span className="text-primary">Story</span>, and Spirit.
           </h1>
-          <p className="text-lg text-muted-foreground max-w-lg">{content.hero_subtitle}</p>
+          <p className="text-lg text-muted-foreground max-w-lg">
+            Kathmandu's premier 70-pax intimate auditorium, managed by Nepa-laya.
+          </p>
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               onClick={() => scrollToSection("#booking")}

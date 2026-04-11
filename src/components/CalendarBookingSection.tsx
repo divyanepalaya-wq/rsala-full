@@ -8,7 +8,6 @@ import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { toast } from "sonner";
 import { isDateBlocked, getPaletiDatesForYear, calculateEstimatedCost } from "@/lib/bookingUtils";
-import { useSettings } from "@/contexts/SettingsContext";
 import type { BookingServices } from "@/types/booking";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -34,15 +33,14 @@ const DEFAULT_SERVICES: BookingServices = {
   valet: false, venue_assistance: false,
 };
 
-type AddonKey = "sound" | "light" | "sound_light_additional" | "video_technical" | "video_production" | "valet" | "venue_assistance";
-const ADDON_DEFS: { key: AddonKey; label: string; note?: string }[] = [
-  { key: "sound",                   label: "Sound Technical" },
-  { key: "light",                   label: "Light Technical" },
-  { key: "sound_light_additional",  label: "Additional Sound & Light" },
-  { key: "video_technical",         label: "Video Technical" },
-  { key: "video_production",        label: "Final Video Production (4 PSD)" },
-  { key: "valet",                   label: "Valet Driver / Parking",  note: "upto 4 hrs" },
-  { key: "venue_assistance",        label: "Venue Assistance",        note: "upto 4 hrs" },
+const ADDONS = [
+  { key: "sound" as const,                   label: "Sound Technical",               price: 5000 },
+  { key: "light" as const,                   label: "Light Technical",               price: 5000 },
+  { key: "sound_light_additional" as const,  label: "Additional Sound & Light",      price: 15000 },
+  { key: "video_technical" as const,         label: "Video Technical",               price: 5000 },
+  { key: "video_production" as const,        label: "Final Video Production (4 PSD)", price: 20000 },
+  { key: "valet" as const,                   label: "Valet Driver / Parking",        price: 1500, note: "upto 4 hrs" },
+  { key: "venue_assistance" as const,        label: "Venue Assistance",              price: 1500, note: "upto 4 hrs" },
 ];
 
 const sectionReveal = {
@@ -55,8 +53,6 @@ const sectionReveal = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const CalendarBookingSection = () => {
-  const { pricing } = useSettings();
-  const ADDONS = ADDON_DEFS.map((a) => ({ ...a, price: pricing[a.key as keyof typeof pricing] as number }));
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -69,7 +65,7 @@ const CalendarBookingSection = () => {
   const [phoneTouched, setPhoneTouched] = useState(false);
 
   const paletiDates = useMemo(() => getPaletiDatesForYear(), []);
-  const estimatedCost = useMemo(() => calculateEstimatedCost(services, pricing), [services, pricing]);
+  const estimatedCost = useMemo(() => calculateEstimatedCost(services), [services]);
 
   const phoneError =
     phoneTouched && (!phone.trim() || !NEPAL_PHONE_REGEX.test(phone.trim()))
@@ -240,7 +236,7 @@ const CalendarBookingSection = () => {
                       <span className="text-sm font-medium">Upto {dur === "4hrs" ? "4" : "8"} hours</span>
                     </div>
                     <p className="text-lg font-semibold tabular-nums pl-5">
-                      रू {(dur === "4hrs" ? pricing.hall_4hrs : pricing.hall_8hrs).toLocaleString()}
+                      रू {dur === "4hrs" ? "15,000" : "25,000"}
                     </p>
                   </button>
                 ))}
@@ -292,7 +288,7 @@ const CalendarBookingSection = () => {
                       <input type="checkbox" checked={services.generator_backup}
                         onChange={(e) => setSvc("generator_backup", e.target.checked)}
                         className="w-4 h-4 accent-primary rounded shrink-0" />
-                      <span className="text-sm flex-1">Generator Backup<span className="text-muted-foreground text-xs ml-1">· रू {pricing.generator_backup.toLocaleString()}/hr</span></span>
+                      <span className="text-sm flex-1">Generator Backup<span className="text-muted-foreground text-xs ml-1">· रू 2,000/hr</span></span>
                       {services.generator_backup ? (
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.preventDefault()}>
                           <button type="button" onClick={() => setSvc("generator_hours", Math.max(1, (services.generator_hours || 1) - 1))}
@@ -305,11 +301,11 @@ const CalendarBookingSection = () => {
                             <Plus className="w-3 h-3" />
                           </button>
                           <span className="text-xs text-muted-foreground tabular-nums ml-1">
-                            = रू {(pricing.generator_backup * (services.generator_hours || 1)).toLocaleString()}
+                            = रू {(2000 * (services.generator_hours || 1)).toLocaleString()}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-sm text-muted-foreground tabular-nums shrink-0">+रू {pricing.generator_backup.toLocaleString()}/hr</span>
+                        <span className="text-sm text-muted-foreground tabular-nums shrink-0">+रू 2,000/hr</span>
                       )}
                     </label>
                   </div>
