@@ -104,9 +104,9 @@ export function getServicesBreakdown(services: BookingServices): { label: string
 
 export function exportToCSV(bookings: Booking[]) {
   const headers = [
-    "Date", "Name", "Email", "Phone", "Event Type", "Status",
+    "Date", "Name", "Email", "Phone", "Event Type", "Status", "Type",
     "Estimated Cost (NPR)", "Amount Paid (NPR)", "Payment Method",
-    "Manual", "Submitted At",
+    "Submitted At",
   ];
   const rows = bookings.map((b) => [
     b.booking_date,
@@ -115,10 +115,10 @@ export function exportToCSV(bookings: Booking[]) {
     b.phone ?? "",
     b.event_type,
     b.status,
+    b.booking_type ?? (b.is_manual ? "manual" : "online"),
     b.estimated_cost != null ? String(b.estimated_cost) : "",
     b.payment_amount != null ? String(b.payment_amount) : "",
     b.payment_method ?? "",
-    b.is_manual ? "Yes" : "No",
     b.created_at ? format(b.created_at.toDate(), "yyyy-MM-dd HH:mm") : "",
   ]);
 

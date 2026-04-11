@@ -250,7 +250,11 @@ const BookingDetailModal = ({
             <div><p className="text-xs text-muted-foreground">Name</p><p className="font-medium">{booking.full_name}</p></div>
             <div><p className="text-xs text-muted-foreground">Phone</p><p className="font-medium">{booking.phone ?? "—"}</p></div>
             <div className="col-span-2"><p className="text-xs text-muted-foreground">Email</p><p className="font-medium">{booking.email}</p></div>
-            {booking.is_manual && <div className="col-span-2"><span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded font-medium">Manual Booking</span></div>}
+            <div className="col-span-2">
+              <span className={`text-xs px-2 py-0.5 rounded font-medium ${booking.booking_type === "manual" ? "bg-primary/10 text-primary" : "bg-blue-50 text-blue-600"}`}>
+                {booking.booking_type === "manual" ? "Manual Booking" : "Online Booking"}
+              </span>
+            </div>
           </div>
 
           {/* Services breakdown */}
@@ -380,7 +384,7 @@ const AddBookingDialog = ({ open, onClose, approvedDates }: {
     try {
       await addDoc(collection(db, "bookings"), {
         full_name: name, email, phone: phone || null, event_type: eventType,
-        booking_date: date, status: "approved", is_manual: true, notes,
+        booking_date: date, status: "approved", is_manual: true, booking_type: "manual", notes,
         selected_services: services, estimated_cost: estimatedCost,
         payment_amount: null, payment_method: null, payment_notes: "",
         created_at: serverTimestamp(),
@@ -924,7 +928,9 @@ const AdminDashboard = ({ user }: { user: User }) => {
                         className={`transition-colors cursor-pointer ${b.status === "deleted" ? "opacity-50" : "hover:bg-secondary/40"}`}>
                         <td className="px-5 py-3.5 whitespace-nowrap">
                           <span className="font-medium">{b.booking_date ? format(parseISO(b.booking_date), "MMM d, yyyy") : "—"}</span>
-                          {b.is_manual && <span className="ml-1.5 text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">Manual</span>}
+                          <span className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded font-medium ${b.booking_type === "manual" ? "bg-primary/10 text-primary" : "bg-blue-50 text-blue-600"}`}>
+                            {b.booking_type === "manual" ? "Manual" : "Online"}
+                          </span>
                         </td>
                         <td className="px-5 py-3.5">
                           <p className="font-medium truncate max-w-[130px]">{b.full_name}</p>

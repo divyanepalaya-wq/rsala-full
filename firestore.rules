@@ -8,7 +8,7 @@ service cloud.firestore {
         && request.resource.data.is_manual == false
         && request.resource.data.keys().hasAll([
              "full_name","email","event_type","booking_date",
-             "status","is_manual","notes"
+             "status","is_manual","booking_type","notes"
            ]);
 
       // Authenticated admin can do anything (read, create, update, delete)

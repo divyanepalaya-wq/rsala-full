@@ -1,6 +1,7 @@
 import type { Timestamp } from "firebase/firestore";
 
 export type BookingStatus = "pending" | "approved" | "rejected" | "cancelled" | "deleted";
+export type BookingType = "online" | "manual";
 export type PaymentMethod = "cash" | "bank_transfer" | "esewa" | "khalti" | "fonepay" | "cheque";
 export type PaymentStatus = "unpaid" | "partial" | "paid";
 
@@ -26,6 +27,7 @@ export interface Booking {
   booking_date: string; // "YYYY-MM-DD"
   status: BookingStatus;
   is_manual: boolean;
+  booking_type: BookingType;
   notes: string;
   created_at: Timestamp | null;
   // Services & cost (optional for backward-compat with old bookings)

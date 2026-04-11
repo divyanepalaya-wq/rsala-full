@@ -111,7 +111,7 @@ const CalendarBookingSection = () => {
       await addDoc(collection(db, "bookings"), {
         full_name: name, email, phone: phone || null, event_type: eventType,
         booking_date: format(selectedDate, "yyyy-MM-dd"),
-        status: "pending", is_manual: false, notes: "",
+        status: "pending", is_manual: false, booking_type: "online", notes: "",
         selected_services: services, estimated_cost: estimatedCost,
         payment_amount: null, payment_method: null, payment_notes: "",
         created_at: serverTimestamp(),
