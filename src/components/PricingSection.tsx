@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Mic, Camera, Lightbulb, Film, Car, Users, Zap, Package } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const sectionReveal = {
   initial: { opacity: 0, y: 12 },
@@ -8,7 +9,10 @@ const sectionReveal = {
   transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
 };
 
+const fmt = (n: number) => `रू ${n.toLocaleString()}`;
+
 const PricingSection = () => {
+  const { pricing } = useSettings();
   return (
     <section id="pricing" className="py-14 md:py-24 bg-background">
       <div className="container mx-auto px-6">
@@ -25,12 +29,12 @@ const PricingSection = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="rounded-lg bg-secondary p-5">
                 <p className="text-muted-foreground text-sm mb-1">Upto 4 hours</p>
-                <p className="text-3xl font-semibold tabular-nums">रू 15,000</p>
+                <p className="text-3xl font-semibold tabular-nums">{fmt(pricing.hall_4hrs)}</p>
                 <p className="text-xs text-muted-foreground mt-1">Per Show</p>
               </div>
               <div className="rounded-lg bg-secondary p-5">
                 <p className="text-muted-foreground text-sm mb-1">Upto 8 hours</p>
-                <p className="text-3xl font-semibold tabular-nums">रू 25,000</p>
+                <p className="text-3xl font-semibold tabular-nums">{fmt(pricing.hall_8hrs)}</p>
                 <p className="text-xs text-muted-foreground mt-1">Per Show</p>
               </div>
             </div>
@@ -42,10 +46,10 @@ const PricingSection = () => {
           <h3 className="text-lg font-semibold mb-6">Technical</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: Mic, label: "Sound", price: "5,000" },
-              { icon: Lightbulb, label: "Light", price: "5,000" },
-              { icon: Camera, label: "Video", price: "5,000" },
-              { icon: Package, label: "Sound & Light Bundle", price: "15,000", highlight: true },
+              { icon: Mic, label: "Sound", price: pricing.sound },
+              { icon: Lightbulb, label: "Light", price: pricing.light },
+              { icon: Camera, label: "Video", price: pricing.video_technical },
+              { icon: Package, label: "Sound & Light Bundle", price: pricing.sound_light_additional, highlight: true },
             ].map(({ icon: Icon, label, price, highlight }) => (
               <div
                 key={label}
@@ -59,7 +63,7 @@ const PricingSection = () => {
                   <Icon className="w-5 h-5 text-primary" />
                 </div>
                 <p className="font-medium mb-1 text-sm leading-snug">{label}</p>
-                <p className="text-2xl font-semibold tabular-nums">रू {price}</p>
+                <p className="text-2xl font-semibold tabular-nums">{fmt(price)}</p>
                 <p className="text-muted-foreground text-xs mt-1">Per Show</p>
               </div>
             ))}
@@ -75,7 +79,7 @@ const PricingSection = () => {
                 <Film className="w-5 h-5 text-primary" />
               </div>
               <p className="font-medium mb-1">Final Video Production</p>
-              <p className="text-2xl font-semibold tabular-nums">रू 20,000</p>
+              <p className="text-2xl font-semibold tabular-nums">{fmt(pricing.video_production)}</p>
               <p className="text-muted-foreground text-sm">4 PSD Cameras · Per Show</p>
             </div>
 
@@ -84,7 +88,7 @@ const PricingSection = () => {
                 <Zap className="w-5 h-5 text-primary" />
               </div>
               <p className="font-medium mb-1">Generator Backup</p>
-              <p className="text-2xl font-semibold tabular-nums">रू 2,000</p>
+              <p className="text-2xl font-semibold tabular-nums">{fmt(pricing.generator_backup)}</p>
               <p className="text-muted-foreground text-sm">Per Hour</p>
             </div>
 
@@ -93,7 +97,7 @@ const PricingSection = () => {
                 <Car className="w-5 h-5 text-primary" />
               </div>
               <p className="font-medium mb-1">Valet Driver / Parking</p>
-              <p className="text-2xl font-semibold tabular-nums">रू 1,500</p>
+              <p className="text-2xl font-semibold tabular-nums">{fmt(pricing.valet)}</p>
               <p className="text-muted-foreground text-sm">Upto 4 hrs · +रू 300/hr</p>
             </div>
 
@@ -102,7 +106,7 @@ const PricingSection = () => {
                 <Users className="w-5 h-5 text-primary" />
               </div>
               <p className="font-medium mb-1">Venue Assistance</p>
-              <p className="text-2xl font-semibold tabular-nums">रू 1,500</p>
+              <p className="text-2xl font-semibold tabular-nums">{fmt(pricing.venue_assistance)}</p>
               <p className="text-muted-foreground text-sm">Upto 4 hrs · +रू 300/hr</p>
             </div>
           </div>

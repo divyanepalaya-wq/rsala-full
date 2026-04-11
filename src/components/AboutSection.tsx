@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const sectionReveal = {
   initial: { opacity: 0, y: 12 },
@@ -12,16 +13,13 @@ const VENUE_MAP_URL =
   "https://maps.app.goo.gl/j1RMyeUB19DXYqor7";
 
 const AboutSection = () => {
+  const { content } = useSettings();
   return (
     <section id="about" className="bg-secondary py-14 md:py-24">
       <div className="container mx-auto px-6">
         <motion.div {...sectionReveal} className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl mb-6">About r-sala</h2>
-          <p className="text-muted-foreground text-lg mb-8">
-            r-sala is the heart of acoustic excellence and the home of the Paleti music series.
-            Curated by Nepa-laya, we offer a professional, tiered-seating environment for concerts,
-            book launches, and seminars.
-          </p>
+          <p className="text-muted-foreground text-lg mb-8">{content.about_text}</p>
 
           {/* Dictionary meaning */}
           <div className="bg-background rounded-2xl p-6 md:p-8 shadow-soft text-left max-w-md mx-auto mb-8">

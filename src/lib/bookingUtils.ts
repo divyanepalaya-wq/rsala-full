@@ -71,32 +71,38 @@ export const SERVICE_LABELS: Record<string, string> = {
   venue_assistance: "Venue Assistance",
 };
 
-export function calculateEstimatedCost(services: BookingServices): number {
-  let total = services.hall_duration === "4hrs" ? SERVICE_PRICES.hall_4hrs : SERVICE_PRICES.hall_8hrs;
-  if (services.sound) total += SERVICE_PRICES.sound;
-  if (services.light) total += SERVICE_PRICES.light;
-  if (services.sound_light_additional) total += SERVICE_PRICES.sound_light_additional;
-  if (services.video_technical) total += SERVICE_PRICES.video_technical;
-  if (services.video_production) total += SERVICE_PRICES.video_production;
-  if (services.generator_backup) total += SERVICE_PRICES.generator_backup * (services.generator_hours || 1);
-  if (services.valet) total += SERVICE_PRICES.valet;
-  if (services.venue_assistance) total += SERVICE_PRICES.venue_assistance;
+export function calculateEstimatedCost(
+  services: BookingServices,
+  prices: typeof SERVICE_PRICES = SERVICE_PRICES
+): number {
+  let total = services.hall_duration === "4hrs" ? prices.hall_4hrs : prices.hall_8hrs;
+  if (services.sound) total += prices.sound;
+  if (services.light) total += prices.light;
+  if (services.sound_light_additional) total += prices.sound_light_additional;
+  if (services.video_technical) total += prices.video_technical;
+  if (services.video_production) total += prices.video_production;
+  if (services.generator_backup) total += prices.generator_backup * (services.generator_hours || 1);
+  if (services.valet) total += prices.valet;
+  if (services.venue_assistance) total += prices.venue_assistance;
   return total;
 }
 
 /** Returns a human-readable breakdown of selected services with costs. */
-export function getServicesBreakdown(services: BookingServices): { label: string; amount: number }[] {
+export function getServicesBreakdown(
+  services: BookingServices,
+  prices: typeof SERVICE_PRICES = SERVICE_PRICES
+): { label: string; amount: number }[] {
   const lines: { label: string; amount: number }[] = [];
   const hallKey = services.hall_duration === "4hrs" ? "hall_4hrs" : "hall_8hrs";
-  lines.push({ label: SERVICE_LABELS[hallKey], amount: SERVICE_PRICES[hallKey] });
-  if (services.sound) lines.push({ label: SERVICE_LABELS.sound, amount: SERVICE_PRICES.sound });
-  if (services.light) lines.push({ label: SERVICE_LABELS.light, amount: SERVICE_PRICES.light });
-  if (services.sound_light_additional) lines.push({ label: SERVICE_LABELS.sound_light_additional, amount: SERVICE_PRICES.sound_light_additional });
-  if (services.video_technical) lines.push({ label: SERVICE_LABELS.video_technical, amount: SERVICE_PRICES.video_technical });
-  if (services.video_production) lines.push({ label: SERVICE_LABELS.video_production, amount: SERVICE_PRICES.video_production });
-  if (services.generator_backup) lines.push({ label: `Generator Backup (${services.generator_hours || 1} hr${(services.generator_hours || 1) > 1 ? "s" : ""})`, amount: SERVICE_PRICES.generator_backup * (services.generator_hours || 1) });
-  if (services.valet) lines.push({ label: SERVICE_LABELS.valet, amount: SERVICE_PRICES.valet });
-  if (services.venue_assistance) lines.push({ label: SERVICE_LABELS.venue_assistance, amount: SERVICE_PRICES.venue_assistance });
+  lines.push({ label: SERVICE_LABELS[hallKey], amount: prices[hallKey] });
+  if (services.sound) lines.push({ label: SERVICE_LABELS.sound, amount: prices.sound });
+  if (services.light) lines.push({ label: SERVICE_LABELS.light, amount: prices.light });
+  if (services.sound_light_additional) lines.push({ label: SERVICE_LABELS.sound_light_additional, amount: prices.sound_light_additional });
+  if (services.video_technical) lines.push({ label: SERVICE_LABELS.video_technical, amount: prices.video_technical });
+  if (services.video_production) lines.push({ label: SERVICE_LABELS.video_production, amount: prices.video_production });
+  if (services.generator_backup) lines.push({ label: `Generator Backup (${services.generator_hours || 1} hr${(services.generator_hours || 1) > 1 ? "s" : ""})`, amount: prices.generator_backup * (services.generator_hours || 1) });
+  if (services.valet) lines.push({ label: SERVICE_LABELS.valet, amount: prices.valet });
+  if (services.venue_assistance) lines.push({ label: SERVICE_LABELS.venue_assistance, amount: prices.venue_assistance });
   return lines;
 }
 
