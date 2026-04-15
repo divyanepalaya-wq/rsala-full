@@ -46,7 +46,7 @@ const SiteHeader = () => {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            <img src={logo} alt="r-sala logo" className="h-12 w-auto" />
+            <img src={logo} alt="r-sala logo" className="h-14 w-auto" />
           </a>
 
           {/* Desktop nav */}
