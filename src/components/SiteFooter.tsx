@@ -36,7 +36,6 @@ const SiteFooter = () => (
           <img src={logo} alt="r-sala" className="h-12 w-auto" />
           <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
             Kathmandu's premier intimate auditorium for concerts, talks, book launches, and more.
-            Managed by Nepa-laya.
           </p>
           {/* Social */}
           <div className="flex items-center gap-2 pt-1">
