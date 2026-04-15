@@ -189,127 +189,100 @@ const CalendarBookingSection = () => {
             </p>
           </motion.div>
 
-          {/* Right — form on white card */}
+          {/* Right — form */}
           <motion.form
             {...sectionReveal}
             transition={{ ...sectionReveal.transition, delay: 0.1 }}
             onSubmit={handleSubmit}
-            className="rounded-2xl bg-background p-7 md:p-8 space-y-6"
+            className="rounded-2xl bg-background p-7 md:p-8 space-y-5"
           >
-          {/* Form header */}
-          <div className="pb-5 border-b border-border">
-            <span className="text-xs uppercase tracking-widest text-primary font-semibold">Booking Request</span>
-            <p className="text-sm text-muted-foreground mt-1">Submit your details and we'll get back to you shortly.</p>
-          </div>
 
-          {/* Name & Email */}
-          <div className="grid sm:grid-cols-2 gap-5">
+          {/* Row 1: Name + Phone */}
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Full Name *</label>
               <input type="text" value={name} onChange={(e) => setName(e.target.value)}
                 required placeholder="Your name" className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com" className={inputClass} />
-            </div>
-          </div>
-
-          {/* Phone & Event Type */}
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div>
               <label className={labelClass}>Phone *</label>
               <input type="tel" value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 onBlur={() => setPhoneTouched(true)}
-                required
-                placeholder="9812345678"
+                required placeholder="9812345678"
                 className={cn(inputClass, phoneError && "border-destructive focus:ring-destructive/20")}
               />
-              <p className={cn("text-xs mt-1", phoneError ? "text-destructive" : "text-muted-foreground")}>
-                {phoneError ?? "Nepal number: 98XXXXXXXX or +977 98XXXXXXXX"}
-              </p>
+              {phoneError && (
+                <p className="text-xs text-destructive mt-1">{phoneError}</p>
+              )}
             </div>
+          </div>
+
+          {/* Row 2: Event Type + Date */}
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Event Type *</label>
               <select value={eventType} onChange={(e) => setEventType(e.target.value)}
                 required className={inputClass}>
-                <option value="">Select event type</option>
+                <option value="">Select type</option>
                 {EVENT_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
               </select>
             </div>
-          </div>
-
-          {/* Date Picker */}
-          <div>
-            <label className={labelClass}>Booking Date *</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline"
-                  className={cn("w-full justify-start text-left font-normal min-h-[44px]", !selectedDate && "text-muted-foreground")}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={selectedDate} onSelect={handleDateSelect}
-                  disabled={(date) => date < new Date(new Date().setHours(0,0,0,0)) || isDateBlocked(date, approvedDates)}
-                  initialFocus className={cn("p-3 pointer-events-auto")} />
-              </PopoverContent>
-            </Popover>
-            <p className="text-xs text-muted-foreground mt-1.5">
-              Grayed-out dates are unavailable or reserved for the Paleti Series.
-            </p>
-          </div>
-
-          {/* ── Services — compact collapsible ───────────────────────── */}
-          <div className="rounded-xl bg-secondary overflow-hidden">
-
-            {/* Hall Duration — always visible */}
-            <div className="p-4">
-              <p className={`${labelClass} mb-3`}>
-                Hall Rental *
-              </p>
-              <div className="grid grid-cols-2 gap-2.5">
-                {(["4hrs", "8hrs"] as const).map((dur) => (
-                  <button type="button" key={dur} onClick={() => setSvc("hall_duration", dur)}
-                    className={cn(
-                      "rounded-lg border-2 p-3.5 text-left transition-all duration-150",
-                      services.hall_duration === dur
-                        ? "border-primary bg-primary/10 shadow-sm"
-                        : "border-border bg-background hover:border-primary/50"
-                    )}>
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <div className={cn("w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
-                        services.hall_duration === dur ? "border-primary" : "border-muted-foreground/30")}>
-                        {services.hall_duration === dur && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
-                      </div>
-                      <span className="text-sm font-medium">Upto {dur === "4hrs" ? "4" : "8"} hours</span>
-                    </div>
-                    <p className="text-lg font-semibold tabular-nums pl-5">
-                      रू {dur === "4hrs" ? "15,000" : "25,000"}
-                    </p>
-                  </button>
-                ))}
-              </div>
+            <div>
+              <label className={labelClass}>Date *</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline"
+                    className={cn("w-full justify-start text-left font-normal min-h-[44px] bg-secondary border-input hover:bg-background", !selectedDate && "text-muted-foreground")}>
+                    <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+                    {selectedDate ? format(selectedDate, "MMM d, yyyy") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar mode="single" selected={selectedDate} onSelect={handleDateSelect}
+                    disabled={(date) => date < new Date(new Date().setHours(0,0,0,0)) || isDateBlocked(date, approvedDates)}
+                    initialFocus className="p-3 pointer-events-auto" />
+                </PopoverContent>
+              </Popover>
             </div>
+          </div>
 
-            {/* Optional add-ons toggle */}
+          {/* Hall duration */}
+          <div>
+            <label className={labelClass}>Hall Rental *</label>
+            <div className="grid grid-cols-2 gap-3">
+              {(["4hrs", "8hrs"] as const).map((dur) => (
+                <button type="button" key={dur} onClick={() => setSvc("hall_duration", dur)}
+                  className={cn(
+                    "rounded-lg border-2 p-4 text-left transition-all duration-150",
+                    services.hall_duration === dur
+                      ? "border-primary bg-primary/5"
+                      : "border-input bg-secondary hover:border-primary/40"
+                  )}>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Up to {dur === "4hrs" ? "4" : "8"} hours
+                  </p>
+                  <p className={cn("text-lg font-semibold tabular-nums", services.hall_duration === dur ? "text-primary" : "")}>
+                    रू {dur === "4hrs" ? "15,000" : "25,000"}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Add-ons — collapsible */}
+          <div className="rounded-lg border border-border overflow-hidden">
             <button
               type="button"
               onClick={() => setAddonsOpen((o) => !o)}
-              className="w-full flex items-center justify-between px-4 py-3 border-t border-border/60 text-sm hover:bg-black/5 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-secondary/50 transition-colors"
             >
-              <span className="text-muted-foreground">
-                {selectedAddonCount > 0
-                  ? <span className="text-foreground font-medium">{selectedAddonCount} add-on{selectedAddonCount > 1 ? "s" : ""} selected</span>
-                  : "Add additional services"}
+              <span className={selectedAddonCount > 0 ? "text-foreground font-medium" : "text-muted-foreground"}>
+                {selectedAddonCount > 0 ? `${selectedAddonCount} add-on${selectedAddonCount > 1 ? "s" : ""} selected` : "Add services (sound, light, video…)"}
               </span>
               <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200", addonsOpen && "rotate-180")} />
             </button>
 
-            {/* Expandable add-ons */}
             <AnimatePresence initial={false}>
               {addonsOpen && (
                 <motion.div
@@ -319,28 +292,31 @@ const CalendarBookingSection = () => {
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-4 pb-4 pt-3 border-t border-border space-y-1">
+                  <div className="px-4 pb-3 pt-2 border-t border-border space-y-0.5">
                     {ADDONS.map(({ key, label, price, note }) => (
-                      <label key={key}
-                        className={cn(
-                          "flex items-center gap-3 py-2 px-3 rounded-lg cursor-pointer transition-colors",
-                          services[key] ? "bg-primary/5" : "hover:bg-secondary/60"
-                        )}>
+                      <label key={key} className={cn(
+                        "flex items-center gap-3 py-2 px-2 rounded-md cursor-pointer transition-colors",
+                        services[key] ? "bg-primary/5" : "hover:bg-secondary/60"
+                      )}>
                         <input type="checkbox" checked={!!services[key]}
                           onChange={(e) => setSvc(key, e.target.checked)}
-                          className="w-4 h-4 accent-primary rounded shrink-0" />
-                        <span className="text-sm flex-1">{label}{note && <span className="text-muted-foreground text-xs ml-1">· {note}</span>}</span>
+                          className="w-4 h-4 accent-primary shrink-0" />
+                        <span className="text-sm flex-1">{label}
+                          {note && <span className="text-muted-foreground text-xs ml-1">· {note}</span>}
+                        </span>
                         <span className="text-sm text-muted-foreground tabular-nums shrink-0">+रू {price.toLocaleString()}</span>
                       </label>
                     ))}
 
-                    {/* Generator with stepper */}
-                    <label className={cn("flex items-center gap-3 py-2 px-3 rounded-lg cursor-pointer transition-colors",
+                    {/* Generator */}
+                    <label className={cn("flex items-center gap-3 py-2 px-2 rounded-md cursor-pointer transition-colors",
                       services.generator_backup ? "bg-primary/5" : "hover:bg-secondary/60")}>
                       <input type="checkbox" checked={services.generator_backup}
                         onChange={(e) => setSvc("generator_backup", e.target.checked)}
-                        className="w-4 h-4 accent-primary rounded shrink-0" />
-                      <span className="text-sm flex-1">Generator Backup<span className="text-muted-foreground text-xs ml-1">· रू 2,000/hr</span></span>
+                        className="w-4 h-4 accent-primary shrink-0" />
+                      <span className="text-sm flex-1">Generator Backup
+                        <span className="text-muted-foreground text-xs ml-1">· रू 2,000/hr</span>
+                      </span>
                       {services.generator_backup ? (
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.preventDefault()}>
                           <button type="button" onClick={() => setSvc("generator_hours", Math.max(1, (services.generator_hours || 1) - 1))}
@@ -352,9 +328,7 @@ const CalendarBookingSection = () => {
                             className="w-6 h-6 rounded border border-input flex items-center justify-center hover:bg-secondary transition-colors">
                             <Plus className="w-3 h-3" />
                           </button>
-                          <span className="text-xs text-muted-foreground tabular-nums ml-1">
-                            = रू {(2000 * (services.generator_hours || 1)).toLocaleString()}
-                          </span>
+                          <span className="text-xs text-muted-foreground tabular-nums ml-1">= रू {(2000 * (services.generator_hours || 1)).toLocaleString()}</span>
                         </div>
                       ) : (
                         <span className="text-sm text-muted-foreground tabular-nums shrink-0">+रू 2,000/hr</span>
@@ -364,26 +338,24 @@ const CalendarBookingSection = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {/* Estimated cost — always visible */}
-            <div className="flex items-center justify-between px-4 py-4 bg-foreground border-t border-border/60 rounded-b-xl">
-              <div>
-                <p className="text-xs uppercase tracking-widest font-semibold text-white/40">Estimated Cost</p>
-                <p className="text-[11px] text-white/25 mt-0.5">May vary based on final requirements</p>
-              </div>
-              <p className="text-2xl font-bold tabular-nums text-primary">
-                रू {estimatedCost.toLocaleString()}
-              </p>
-            </div>
           </div>
 
-          {/* Submit */}
+          {/* Estimated cost + submit */}
+          <div className="flex items-center justify-between pt-1 pb-1">
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest">Estimated total</p>
+              <p className="text-[11px] text-muted-foreground/60 mt-0.5">May vary on final requirements</p>
+            </div>
+            <p className="text-2xl font-bold tabular-nums text-primary">रू {estimatedCost.toLocaleString()}</p>
+          </div>
+
           <button type="submit" disabled={submitting || !!phoneError || !phone.trim()}
-            className="w-full min-h-[48px] rounded-lg bg-primary text-primary-foreground font-medium text-base flex items-center justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none">
+            className="w-full min-h-[48px] rounded-lg bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none">
             {submitting
               ? <span className="animate-pulse">Submitting…</span>
-              : <><Send className="w-4 h-4" />Submit Request</>}
+              : <><Send className="w-4 h-4" />Submit Booking Request</>}
           </button>
+
           </motion.form>
 
         </div>{/* /grid */}
