@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { X } from "lucide-react";
+import topbarPattern from "@/assets/topbar.png";
 
 export interface TopBarConfig {
   enabled: boolean;
@@ -9,57 +10,6 @@ export interface TopBarConfig {
   button_text: string;
   button_url: string;
 }
-
-// Mandala SVG pattern — subtle white on orange
-const MANDALA_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-  <g transform="translate(50,50)" opacity="0.13" fill="white">
-    <!-- outer ring -->
-    <circle r="46" fill="none" stroke="white" stroke-width="0.7"/>
-    <!-- middle ring -->
-    <circle r="34" fill="none" stroke="white" stroke-width="0.5"/>
-    <!-- inner ring -->
-    <circle r="22" fill="none" stroke="white" stroke-width="0.7"/>
-    <!-- core ring -->
-    <circle r="10" fill="none" stroke="white" stroke-width="0.5"/>
-    <!-- center dot -->
-    <circle r="2.5" fill="white" opacity="0.6"/>
-    <!-- 8 outer petals -->
-    <ellipse rx="3" ry="11" transform="rotate(0)   translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(45)  translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(90)  translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(135) translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(180) translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(225) translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(270) translate(0,-35)" opacity="0.5"/>
-    <ellipse rx="3" ry="11" transform="rotate(315) translate(0,-35)" opacity="0.5"/>
-    <!-- 8 inner petals -->
-    <ellipse rx="2" ry="7" transform="rotate(22.5)  translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(67.5)  translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(112.5) translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(157.5) translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(202.5) translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(247.5) translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(292.5) translate(0,-22)" opacity="0.4"/>
-    <ellipse rx="2" ry="7" transform="rotate(337.5) translate(0,-22)" opacity="0.4"/>
-    <!-- cardinal dots on middle ring -->
-    <circle cx="34"  cy="0"   r="2" opacity="0.6"/>
-    <circle cx="-34" cy="0"   r="2" opacity="0.6"/>
-    <circle cx="0"   cy="34"  r="2" opacity="0.6"/>
-    <circle cx="0"   cy="-34" r="2" opacity="0.6"/>
-    <!-- diagonal dots -->
-    <circle cx="24"  cy="24"  r="1.5" opacity="0.4"/>
-    <circle cx="-24" cy="24"  r="1.5" opacity="0.4"/>
-    <circle cx="24"  cy="-24" r="1.5" opacity="0.4"/>
-    <circle cx="-24" cy="-24" r="1.5" opacity="0.4"/>
-    <!-- tiny corner accents -->
-    <circle cx="47"  cy="0"   r="1.2" opacity="0.5"/>
-    <circle cx="-47" cy="0"   r="1.2" opacity="0.5"/>
-    <circle cx="0"   cy="47"  r="1.2" opacity="0.5"/>
-    <circle cx="0"   cy="-47" r="1.2" opacity="0.5"/>
-  </g>
-</svg>`;
-
-const PATTERN_URL = `url("data:image/svg+xml,${encodeURIComponent(MANDALA_SVG)}")`;
 
 const TopBar = () => {
   const [config, setConfig] = useState<TopBarConfig | null>(null);
@@ -79,13 +29,13 @@ const TopBar = () => {
   return (
     <div
       style={{
-        backgroundColor: "#C04820",
-        backgroundImage: PATTERN_URL,
-        backgroundSize: "100px 100px",
+        backgroundImage: `url(${topbarPattern})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "120px 120px",
       }}
       className="relative flex items-center justify-center gap-3 px-10 py-2.5"
     >
-      <p className="text-white text-sm font-medium text-center leading-snug">
+      <p className="text-white text-sm font-bold text-center leading-snug">
         {config.message}
       </p>
 

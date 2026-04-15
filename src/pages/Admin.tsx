@@ -23,6 +23,7 @@ import {
 import { toast } from "sonner";
 
 import { auth, db } from "@/lib/firebase";
+import topbarPattern from "@/assets/topbar.png";
 import {
   exportToCSV, getPaletiDatesForYear, calculateEstimatedCost,
   getServicesBreakdown,
@@ -701,13 +702,13 @@ const AnnouncementPanel = () => {
             <div
               className="rounded-xl overflow-hidden"
               style={{
-                backgroundColor: "#C04820",
-                backgroundImage: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><g transform="translate(50,50)" opacity="0.13" fill="white"><circle r="46" fill="none" stroke="white" stroke-width="0.7"/><circle r="34" fill="none" stroke="white" stroke-width="0.5"/><circle r="22" fill="none" stroke="white" stroke-width="0.7"/><circle r="10" fill="none" stroke="white" stroke-width="0.5"/><circle r="2.5" fill="white" opacity="0.6"/><ellipse rx="3" ry="11" transform="rotate(0) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(45) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(90) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(135) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(180) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(225) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(270) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(315) translate(0,-35)" opacity="0.5"/></g></svg>')}") `,
-                backgroundSize: "100px 100px",
+                backgroundImage: `url(${topbarPattern})`,
+                backgroundRepeat: "repeat",
+                backgroundSize: "120px 120px",
               }}
             >
               <div className="relative flex items-center justify-center gap-3 px-10 py-2.5">
-                <p className="text-white text-sm font-medium text-center">{message}</p>
+                <p className="text-white text-sm font-bold text-center">{message}</p>
                 {buttonText && (
                   <span className="shrink-0 inline-flex items-center px-4 py-1.5 rounded-full bg-white/15 border border-white/30 text-white text-xs font-semibold whitespace-nowrap">
                     {buttonText}
