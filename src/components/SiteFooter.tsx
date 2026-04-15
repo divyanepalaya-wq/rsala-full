@@ -1,4 +1,5 @@
 import logo from "@/assets/r-sala-logo.png";
+import topbarPattern from "@/assets/topbar.png";
 
 const INSTAGRAM_URL = "https://www.instagram.com/rsala_nepalaya/";
 const FACEBOOK_URL  = "https://www.facebook.com/p/Rsala-by-nepalaya-61572842393500/";
@@ -15,9 +16,16 @@ const FacebookIcon = () => (
   </svg>
 );
 
+const wordmarkStyle = {
+  fontSize: "clamp(72px, 19vw, 260px)",
+  letterSpacing: "-0.04em",
+  lineHeight: 1,
+  color: "transparent" as const,
+};
+
 const SiteFooter = () => {
   return (
-    <footer className="bg-[#0a0a0a] border-t border-white/[0.06]">
+    <footer className="bg-background border-t border-border">
 
       {/* Top row */}
       <div className="container mx-auto px-6 pt-10 pb-6">
@@ -25,7 +33,7 @@ const SiteFooter = () => {
 
           <div className="flex items-center gap-3">
             <img src={logo} alt="r-sala" className="h-10 w-auto" />
-            <p className="text-white/30 text-sm">
+            <p className="text-muted-foreground text-sm">
               A Space for Sound, Story, and Spirit.
             </p>
           </div>
@@ -33,12 +41,12 @@ const SiteFooter = () => {
           <div className="flex items-center gap-3">
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
               aria-label="r-sala on Instagram"
-              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/40 hover:border-primary hover:text-primary transition-all duration-200">
+              className="flex items-center justify-center w-9 h-9 rounded-full border border-border text-muted-foreground hover:border-primary hover:text-primary transition-all duration-200">
               <InstagramIcon />
             </a>
             <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
               aria-label="r-sala on Facebook"
-              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/40 hover:border-primary hover:text-primary transition-all duration-200">
+              className="flex items-center justify-center w-9 h-9 rounded-full border border-border text-muted-foreground hover:border-primary hover:text-primary transition-all duration-200">
               <FacebookIcon />
             </a>
           </div>
@@ -46,28 +54,44 @@ const SiteFooter = () => {
         </div>
       </div>
 
-      {/* Giant outlined wordmark */}
-      <div className="overflow-hidden select-none pointer-events-none px-2">
+      {/* Giant wordmark — outline fades out, image fill fades in on hover */}
+      <div className="relative overflow-hidden select-none px-2 group cursor-default">
+
+        {/* Layer 1: outlined (visible by default, fades out on hover) */}
         <p
-          className="text-center font-semibold leading-none tracking-tighter"
+          className="text-center font-semibold transition-opacity duration-700 ease-in-out group-hover:opacity-0"
           style={{
-            fontSize: "clamp(72px, 19vw, 260px)",
-            WebkitTextStroke: "1.5px rgba(255,255,255,0.10)",
-            color: "transparent",
-            letterSpacing: "-0.04em",
+            ...wordmarkStyle,
+            WebkitTextStroke: "1.5px rgba(0,0,0,0.13)",
           }}
           aria-hidden="true"
         >
           r-sala
         </p>
+
+        {/* Layer 2: image-filled (hidden by default, fades in on hover) */}
+        <p
+          className="absolute inset-0 text-center font-semibold opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
+          style={{
+            ...wordmarkStyle,
+            backgroundImage: `url(${topbarPattern})`,
+            backgroundSize: "140px 140px",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+          }}
+          aria-hidden="true"
+        >
+          r-sala
+        </p>
+
       </div>
 
       {/* Bottom bar */}
-      <div className="container mx-auto px-6 pb-6 pt-2">
-        <p className="text-xs text-white/20 text-center">
+      <div className="container mx-auto px-6 pb-6 pt-1">
+        <p className="text-xs text-muted-foreground/60 text-center">
           Managed by{" "}
           <a href="https://nepalaya.com.np/" target="_blank" rel="noopener noreferrer"
-            className="hover:text-white/50 transition-colors">
+            className="hover:text-foreground transition-colors">
             Nepa-laya
           </a>
           {" "}· Kathmandu, Nepal

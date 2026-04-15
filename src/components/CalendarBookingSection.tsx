@@ -152,7 +152,7 @@ const CalendarBookingSection = () => {
             <div className="mt-8 space-y-4">
               {[
                 { label: "Capacity",     value: "Up to 80 guests" },
-                { label: "Location",     value: "Thamel, Kathmandu" },
+                { label: "Location",     value: "Kalikasthan, Kathmandu" },
                 { label: "Availability", value: "Subject to schedule" },
                 { label: "Confirmation", value: "Within 24–48 hours" },
               ].map(({ label, value }) => (
