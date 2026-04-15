@@ -19,7 +19,7 @@ const HeroSection = () => {
             <span className="text-primary">Story</span>, and Spirit.
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg">
-            Kathmandu's premier 70-pax intimate auditorium, managed by Nepa-laya.
+            Kathmandu's premier 80-pax intimate auditorium, managed by Nepa-laya.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
