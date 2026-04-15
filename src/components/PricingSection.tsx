@@ -21,7 +21,7 @@ const PricingSection = () => {
         <motion.div {...sectionReveal} className="max-w-4xl mx-auto mb-8 md:mb-12">
           <div className="rounded-2xl p-6 md:p-8 shadow-soft bg-card hover:shadow-elevated transition-shadow">
             <h3 className="text-xl font-semibold mb-1">Hall Rental</h3>
-            <p className="text-muted-foreground text-sm mb-5">Max 70 Pax · Tiered Seating</p>
+            <p className="text-muted-foreground text-sm mb-5">Max 80 Pax · Tiered Seating</p>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="rounded-lg bg-secondary p-5">
                 <p className="text-muted-foreground text-sm mb-1">Upto 4 hours</p>
