@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const MAPS_URL = "https://maps.app.goo.gl/hFRaoHotrgMUpkcZ7";
 
@@ -36,7 +39,19 @@ const reviews = [
   },
 ];
 
-const ReviewsSection = () => (
+const ReviewsSection = () => {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "settings", "site"), (snap) => {
+      if (snap.exists()) setVisible(snap.data().reviews_enabled !== false);
+    });
+    return () => unsub();
+  }, []);
+
+  if (!visible) return null;
+
+  return (
   <section className="py-10 md:py-16 bg-secondary">
     <div className="container mx-auto px-6">
 
@@ -68,8 +83,8 @@ const ReviewsSection = () => (
           <p className="text-sm text-foreground/70 leading-relaxed">{reviews[0].text}</p>
           <div className="flex gap-2">
             {reviews[0].photos!.map((src, i) => (
-              <div key={i} className="flex-1 h-24 rounded-lg overflow-hidden">
-                <img src={src} alt="" className="w-full h-full object-cover object-center" loading="lazy" />
+              <div key={i} className="flex-1 aspect-[2/3] rounded-lg overflow-hidden">
+                <img src={src} alt="" className="w-full h-full object-cover object-top" loading="lazy" />
               </div>
             ))}
           </div>
@@ -105,6 +120,7 @@ const ReviewsSection = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default ReviewsSection;

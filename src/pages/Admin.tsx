@@ -731,10 +731,78 @@ const AnnouncementPanel = () => {
   );
 };
 
+// ─── Site Settings Panel ──────────────────────────────────────────────────────
+
+const SiteSettingsPanel = () => {
+  const [reviewsEnabled, setReviewsEnabled] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    getDoc(doc(db, "settings", "site")).then((snap) => {
+      if (snap.exists()) setReviewsEnabled(snap.data().reviews_enabled !== false);
+      setLoaded(true);
+    });
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await setDoc(doc(db, "settings", "site"), { reviews_enabled: reviewsEnabled });
+      toast.success("Settings saved.");
+    } catch {
+      toast.error("Failed to save.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!loaded) return (
+    <div className="flex items-center justify-center py-20 text-muted-foreground">
+      <Loader2 className="w-5 h-5 animate-spin mr-2" />Loading…
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold">Site Settings</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">Control what sections are visible on the website.</p>
+      </div>
+
+      <div className="bg-card rounded-2xl shadow-soft p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium">Google Reviews Section</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Show or hide the "Loved by visitors" reviews block.</p>
+          </div>
+          <button
+            onClick={() => setReviewsEnabled((v) => !v)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm font-medium ${
+              reviewsEnabled
+                ? "border-green-200 bg-green-50 text-green-700"
+                : "border-border text-muted-foreground hover:bg-secondary"
+            }`}
+          >
+            {reviewsEnabled
+              ? <><ToggleRight className="w-4 h-4" />Visible</>
+              : <><ToggleLeft className="w-4 h-4" />Hidden</>}
+          </button>
+        </div>
+
+        <Button onClick={handleSave} disabled={saving} size="sm">
+          {saving && <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />}
+          Save
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 // ─── Admin Dashboard ──────────────────────────────────────────────────────────
 
 const AdminDashboard = ({ user }: { user: User }) => {
-  const [activeView, setActiveView] = useState<"bookings" | "announcement">("bookings");
+  const [activeView, setActiveView] = useState<"bookings" | "announcement" | "settings">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState<"all" | BookingStatus>("all");
@@ -932,6 +1000,13 @@ const AdminDashboard = ({ user }: { user: User }) => {
                 <Megaphone className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Announcement</span>
               </button>
+              <button
+                onClick={() => setActiveView("settings")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeView === "settings" ? "bg-primary-foreground/20 text-primary-foreground" : "text-primary-foreground/50 hover:text-primary-foreground/70"}`}
+              >
+                <ToggleLeft className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Settings</span>
+              </button>
             </div>
             <span className="text-xs text-primary-foreground/40 hidden md:block">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={() => signOut(auth)}
@@ -944,6 +1019,7 @@ const AdminDashboard = ({ user }: { user: User }) => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {activeView === "announcement" && <AnnouncementPanel />}
+        {activeView === "settings" && <SiteSettingsPanel />}
         {activeView === "bookings" && <>
 
         {/* Booking Stats */}
