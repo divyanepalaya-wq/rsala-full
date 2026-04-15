@@ -1,7 +1,7 @@
 import logo from "@/assets/r-sala-logo.png";
 
 const INSTAGRAM_URL = "https://www.instagram.com/rsala_nepalaya/";
-const FACEBOOK_URL = "https://www.facebook.com/p/Rsala-by-nepalaya-61572842393500/";
+const FACEBOOK_URL  = "https://www.facebook.com/p/Rsala-by-nepalaya-61572842393500/";
 
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
@@ -17,52 +17,63 @@ const FacebookIcon = () => (
 
 const SiteFooter = () => {
   return (
-    <footer className="bg-foreground py-12">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center text-center gap-4">
-          <img src={logo} alt="r-sala logo" className="h-14 w-auto" />
-          <p className="text-sm text-primary-foreground/60">
-            A Space for Sound, Story, and Spirit.
-          </p>
+    <footer className="bg-[#0a0a0a] border-t border-white/[0.06]">
 
-          {/* Social links */}
-          <div className="flex items-center gap-4 pt-1">
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* Top row */}
+      <div className="container mx-auto px-6 pt-10 pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="r-sala" className="h-10 w-auto" />
+            <p className="text-white/30 text-sm">
+              A Space for Sound, Story, and Spirit.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
               aria-label="r-sala on Instagram"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary hover:text-white transition-all duration-200"
-            >
+              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/40 hover:border-primary hover:text-primary transition-all duration-200">
               <InstagramIcon />
             </a>
-            <a
-              href={FACEBOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
               aria-label="r-sala on Facebook"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary hover:text-white transition-all duration-200"
-            >
+              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/40 hover:border-primary hover:text-primary transition-all duration-200">
               <FacebookIcon />
             </a>
           </div>
-        </div>
 
-        <div className="border-t border-primary-foreground/10 mt-8 pt-6 text-center">
-          <p className="text-xs text-primary-foreground/40">
-            Managed by{" "}
-            <a
-              href="https://nepalaya.com.np/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-primary-foreground/60 hover:text-primary transition-colors"
-            >
-              Nepa-laya
-            </a>{" "}
-            · Kathmandu, Nepal
-          </p>
         </div>
       </div>
+
+      {/* Giant outlined wordmark */}
+      <div className="overflow-hidden select-none pointer-events-none px-2">
+        <p
+          className="text-center font-semibold leading-none tracking-tighter"
+          style={{
+            fontSize: "clamp(72px, 19vw, 260px)",
+            WebkitTextStroke: "1.5px rgba(255,255,255,0.10)",
+            color: "transparent",
+            letterSpacing: "-0.04em",
+          }}
+          aria-hidden="true"
+        >
+          r-sala
+        </p>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="container mx-auto px-6 pb-6 pt-2">
+        <p className="text-xs text-white/20 text-center">
+          Managed by{" "}
+          <a href="https://nepalaya.com.np/" target="_blank" rel="noopener noreferrer"
+            className="hover:text-white/50 transition-colors">
+            Nepa-laya
+          </a>
+          {" "}· Kathmandu, Nepal
+        </p>
+      </div>
+
     </footer>
   );
 };
