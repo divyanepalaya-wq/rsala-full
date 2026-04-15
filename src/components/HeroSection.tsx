@@ -11,8 +11,8 @@ const sectionReveal = {
 
 const HeroSection = () => {
   return (
-    <section className="min-h-fit md:min-h-[70vh] flex items-center bg-background">
-      <div className="container mx-auto px-6 py-10 md:py-14 grid lg:grid-cols-2 gap-10 items-center">
+    <section className="min-h-fit md:min-h-[55vh] flex items-center bg-background">
+      <div className="container mx-auto px-6 py-8 md:py-10 grid lg:grid-cols-2 gap-10 items-center">
         <motion.div {...sectionReveal} className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1]">
             A Space for Sound,{" "}
