@@ -1,8 +1,6 @@
 import logo from "@/assets/r-sala-logo.png";
 import { scrollToSection } from "@/components/SiteHeader";
-
-const INSTAGRAM_URL = "https://www.instagram.com/rsala_nepalaya/";
-const FACEBOOK_URL  = "https://www.facebook.com/p/Rsala-by-nepalaya-61572842393500/";
+import { useSiteSettings } from "@/lib/siteSettings";
 const MAPS_URL      = "https://maps.app.goo.gl/j1RMyeUB19DXYqor7";
 
 const InstagramIcon = () => (
@@ -24,7 +22,9 @@ const NAV_LINKS = [
   { label: "Book",    href: "#booking" },
 ];
 
-const SiteFooter = () => (
+const SiteFooter = () => {
+  const { instagram_url, facebook_url } = useSiteSettings();
+  return (
   <footer className="bg-secondary border-t border-border">
     <div className="container mx-auto px-6 py-12">
 
@@ -39,12 +39,12 @@ const SiteFooter = () => (
           </p>
           {/* Social */}
           <div className="flex items-center gap-2 pt-1">
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
+            <a href={instagram_url} target="_blank" rel="noopener noreferrer"
               aria-label="Instagram"
               className="flex items-center justify-center w-8 h-8 rounded-lg border border-border text-muted-foreground hover:border-primary hover:text-primary transition-all duration-200">
               <InstagramIcon />
             </a>
-            <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
+            <a href={facebook_url} target="_blank" rel="noopener noreferrer"
               aria-label="Facebook"
               className="flex items-center justify-center w-8 h-8 rounded-lg border border-border text-muted-foreground hover:border-primary hover:text-primary transition-all duration-200">
               <FacebookIcon />
@@ -113,6 +113,7 @@ const SiteFooter = () => (
 
     </div>
   </footer>
-);
+  );
+};
 
 export default SiteFooter;

@@ -8,6 +8,7 @@ import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { toast } from "sonner";
 import { isDateBlocked, getPaletiDatesForYear, calculateEstimatedCost } from "@/lib/bookingUtils";
+import { useSiteSettings } from "@/lib/siteSettings";
 import type { BookingServices } from "@/types/booking";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,7 @@ const CalendarBookingSection = () => {
   const [approvedDates, setApprovedDates] = useState<string[]>([]);
   const [phoneTouched, setPhoneTouched] = useState(false);
 
+  const { booking_enabled } = useSiteSettings();
   const paletiDates = useMemo(() => getPaletiDatesForYear(), []);
   const estimatedCost = useMemo(() => calculateEstimatedCost(services), [services]);
 
@@ -133,6 +135,16 @@ const CalendarBookingSection = () => {
     "w-full min-h-[44px] rounded-lg border border-input bg-secondary px-4 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-background";
 
   const labelClass = "block text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-2";
+
+  if (!booking_enabled) return (
+    <section id="booking" className="py-10 md:py-16 bg-foreground">
+      <div className="container mx-auto px-6 text-center py-16">
+        <p className="text-white/40 text-sm uppercase tracking-widest mb-3">Reservations</p>
+        <h2 className="text-3xl md:text-4xl text-white">Bookings are currently paused.</h2>
+        <p className="text-white/50 text-sm mt-4">Please check back soon or reach us on Instagram.</p>
+      </div>
+    </section>
+  );
 
   return (
     <section id="booking" className="py-10 md:py-16 bg-foreground">

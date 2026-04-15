@@ -735,12 +735,23 @@ const AnnouncementPanel = () => {
 
 const SiteSettingsPanel = () => {
   const [reviewsEnabled, setReviewsEnabled] = useState(true);
+  const [bookingEnabled, setBookingEnabled] = useState(true);
+  const [instagramUrl, setInstagramUrl] = useState("https://www.instagram.com/rsala_nepalaya/");
+  const [facebookUrl, setFacebookUrl] = useState("https://www.facebook.com/p/Rsala-by-nepalaya-61572842393500/");
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
+  const inputCls = "w-full min-h-[40px] rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary";
+
   useEffect(() => {
     getDoc(doc(db, "settings", "site")).then((snap) => {
-      if (snap.exists()) setReviewsEnabled(snap.data().reviews_enabled !== false);
+      if (snap.exists()) {
+        const d = snap.data();
+        setReviewsEnabled(d.reviews_enabled !== false);
+        setBookingEnabled(d.booking_enabled !== false);
+        if (d.instagram_url) setInstagramUrl(d.instagram_url);
+        if (d.facebook_url) setFacebookUrl(d.facebook_url);
+      }
       setLoaded(true);
     });
   }, []);
@@ -748,7 +759,12 @@ const SiteSettingsPanel = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await setDoc(doc(db, "settings", "site"), { reviews_enabled: reviewsEnabled });
+      await setDoc(doc(db, "settings", "site"), {
+        reviews_enabled: reviewsEnabled,
+        booking_enabled: bookingEnabled,
+        instagram_url: instagramUrl,
+        facebook_url: facebookUrl,
+      });
       toast.success("Settings saved.");
     } catch {
       toast.error("Failed to save.");
@@ -757,6 +773,21 @@ const SiteSettingsPanel = () => {
     }
   };
 
+  const Toggle = ({ value, onChange, label, description }: { value: boolean; onChange: () => void; label: string; description: string }) => (
+    <div className="flex items-center justify-between py-3 border-b border-border last:border-0">
+      <div>
+        <p className="text-sm font-medium">{label}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+      </div>
+      <button onClick={onChange}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm font-medium shrink-0 ml-4 ${
+          value ? "border-green-200 bg-green-50 text-green-700" : "border-border text-muted-foreground hover:bg-secondary"
+        }`}>
+        {value ? <><ToggleRight className="w-4 h-4" />On</> : <><ToggleLeft className="w-4 h-4" />Off</>}
+      </button>
+    </div>
+  );
+
   if (!loaded) return (
     <div className="flex items-center justify-center py-20 text-muted-foreground">
       <Loader2 className="w-5 h-5 animate-spin mr-2" />Loading…
@@ -764,37 +795,40 @@ const SiteSettingsPanel = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl">
       <div>
         <h2 className="text-lg font-semibold">Site Settings</h2>
-        <p className="text-sm text-muted-foreground mt-0.5">Control what sections are visible on the website.</p>
+        <p className="text-sm text-muted-foreground mt-0.5">Control sections and links across the website.</p>
       </div>
 
+      {/* Section visibility */}
+      <div className="bg-card rounded-2xl shadow-soft p-6">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Sections</p>
+        <Toggle value={bookingEnabled} onChange={() => setBookingEnabled(v => !v)}
+          label="Booking Form" description="When off, shows a 'Bookings paused' message instead." />
+        <Toggle value={reviewsEnabled} onChange={() => setReviewsEnabled(v => !v)}
+          label="Google Reviews" description="Show or hide the 'Loved by visitors' section." />
+      </div>
+
+      {/* Social links */}
       <div className="bg-card rounded-2xl shadow-soft p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium">Google Reviews Section</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Show or hide the "Loved by visitors" reviews block.</p>
-          </div>
-          <button
-            onClick={() => setReviewsEnabled((v) => !v)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm font-medium ${
-              reviewsEnabled
-                ? "border-green-200 bg-green-50 text-green-700"
-                : "border-border text-muted-foreground hover:bg-secondary"
-            }`}
-          >
-            {reviewsEnabled
-              ? <><ToggleRight className="w-4 h-4" />Visible</>
-              : <><ToggleLeft className="w-4 h-4" />Hidden</>}
-          </button>
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Social Links</p>
+        <div>
+          <label className="block text-xs font-medium text-muted-foreground mb-1.5">Instagram URL</label>
+          <input value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)}
+            placeholder="https://www.instagram.com/..." className={inputCls} />
         </div>
-
-        <Button onClick={handleSave} disabled={saving} size="sm">
-          {saving && <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />}
-          Save
-        </Button>
+        <div>
+          <label className="block text-xs font-medium text-muted-foreground mb-1.5">Facebook URL</label>
+          <input value={facebookUrl} onChange={(e) => setFacebookUrl(e.target.value)}
+            placeholder="https://www.facebook.com/..." className={inputCls} />
+        </div>
       </div>
+
+      <Button onClick={handleSave} disabled={saving}>
+        {saving && <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />}
+        Save Settings
+      </Button>
     </div>
   );
 };

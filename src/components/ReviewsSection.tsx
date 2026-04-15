@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { useSiteSettings } from "@/lib/siteSettings";
 
 const MAPS_URL = "https://maps.app.goo.gl/hFRaoHotrgMUpkcZ7";
 
@@ -40,17 +38,8 @@ const reviews = [
 ];
 
 const ReviewsSection = () => {
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const unsub = onSnapshot(doc(db, "settings", "site"), (snap) => {
-      if (snap.exists()) setVisible(snap.data().reviews_enabled !== false);
-    });
-    return () => unsub();
-  }, []);
-
-  if (!visible) return null;
-
+  const { reviews_enabled } = useSiteSettings();
+  if (!reviews_enabled) return null;
   return (
   <section className="py-10 md:py-16 bg-secondary">
     <div className="container mx-auto px-6">
