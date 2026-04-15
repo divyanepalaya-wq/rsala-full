@@ -13,7 +13,7 @@ const VENUE_MAP_URL =
 
 const AboutSection = () => {
   return (
-    <section id="about" className="bg-secondary py-14 md:py-24">
+    <section id="about" className="bg-secondary py-10 md:py-16">
       <div className="container mx-auto px-6">
         <motion.div {...sectionReveal} className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl mb-6">About r-sala</h2>

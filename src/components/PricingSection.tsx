@@ -10,15 +10,15 @@ const sectionReveal = {
 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="py-14 md:py-24 bg-background">
+    <section id="pricing" className="py-10 md:py-16 bg-background">
       <div className="container mx-auto px-6">
-        <motion.div {...sectionReveal} className="text-center mb-10 md:mb-16">
+        <motion.div {...sectionReveal} className="text-center mb-6 md:mb-10">
           <h2 className="text-3xl md:text-4xl mb-4">Pricing</h2>
           <p className="text-muted-foreground text-lg">Transparent pricing for every event need.</p>
         </motion.div>
 
         {/* Hall Rental */}
-        <motion.div {...sectionReveal} className="max-w-4xl mx-auto mb-8 md:mb-12">
+        <motion.div {...sectionReveal} className="max-w-4xl mx-auto mb-6 md:mb-8">
           <div className="rounded-2xl p-6 md:p-8 shadow-soft bg-card hover:shadow-elevated transition-shadow">
             <h3 className="text-xl font-semibold mb-1">Hall Rental</h3>
             <p className="text-muted-foreground text-sm mb-5">Max 80 Pax · Tiered Seating</p>
@@ -38,7 +38,7 @@ const PricingSection = () => {
         </motion.div>
 
         {/* Technical */}
-        <motion.div {...sectionReveal} className="max-w-4xl mx-auto mb-8 md:mb-12">
+        <motion.div {...sectionReveal} className="max-w-4xl mx-auto mb-6 md:mb-8">
           <h3 className="text-lg font-semibold mb-6">Technical</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[

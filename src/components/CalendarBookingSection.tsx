@@ -133,9 +133,9 @@ const CalendarBookingSection = () => {
     "w-full min-h-[44px] rounded-lg border border-input bg-background px-4 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary";
 
   return (
-    <section id="booking" className="py-14 md:py-24 bg-primary/5">
+    <section id="booking" className="py-10 md:py-16 bg-primary/5">
       <div className="container mx-auto px-6">
-        <motion.div {...sectionReveal} className="text-center mb-16">
+        <motion.div {...sectionReveal} className="text-center mb-8">
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             Reservations
           </span>
