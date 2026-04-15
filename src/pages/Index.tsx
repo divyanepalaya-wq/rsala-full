@@ -1,3 +1,4 @@
+import TopBar from "@/components/TopBar";
 import SiteHeader from "@/components/SiteHeader";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -9,6 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <TopBar />
       <SiteHeader />
       <main>
         <HeroSection />

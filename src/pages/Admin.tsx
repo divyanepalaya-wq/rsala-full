@@ -4,8 +4,8 @@ import {
   signInWithPopup, GoogleAuthProvider, signOut, type User,
 } from "firebase/auth";
 import {
-  collection, addDoc, updateDoc,
-  doc, serverTimestamp, onSnapshot, orderBy, query,
+  collection, addDoc, updateDoc, setDoc,
+  doc, serverTimestamp, onSnapshot, orderBy, query, getDoc,
 } from "firebase/firestore";
 import {
   format, parseISO, subMonths,
@@ -18,7 +18,7 @@ import {
 import {
   LogOut, Plus, Download, Check, X, Trash2, Calendar,
   Users, Clock, Loader2, CreditCard, Ban, Search,
-  TrendingUp, DollarSign, ChevronDown,
+  TrendingUp, DollarSign, ChevronDown, Megaphone, ToggleLeft, ToggleRight, ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -567,9 +567,173 @@ const DeleteConfirmModal = ({
   );
 };
 
+// ─── Announcement Panel ───────────────────────────────────────────────────────
+
+const AnnouncementPanel = () => {
+  const [enabled, setEnabled] = useState(false);
+  const [message, setMessage] = useState("");
+  const [buttonText, setButtonText] = useState("");
+  const [buttonUrl, setButtonUrl] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load current config on mount
+  useEffect(() => {
+    getDoc(doc(db, "settings", "topbar")).then((snap) => {
+      if (snap.exists()) {
+        const d = snap.data();
+        setEnabled(d.enabled ?? false);
+        setMessage(d.message ?? "");
+        setButtonText(d.button_text ?? "");
+        setButtonUrl(d.button_url ?? "");
+      }
+      setLoaded(true);
+    });
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await setDoc(doc(db, "settings", "topbar"), {
+        enabled,
+        message,
+        button_text: buttonText,
+        button_url: buttonUrl,
+      });
+      toast.success("Announcement bar updated.");
+    } catch {
+      toast.error("Failed to save.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const inputCls = "w-full min-h-[40px] rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary";
+
+  if (!loaded) return (
+    <div className="flex items-center justify-center py-20 text-muted-foreground">
+      <Loader2 className="w-5 h-5 animate-spin mr-2" />Loading…
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold">Announcement Bar</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Shown at the very top of the website — use it to promote the latest Paleti show or any announcement.
+        </p>
+      </div>
+
+      <div className="bg-card rounded-2xl shadow-soft p-6 space-y-5">
+
+        {/* Enable toggle */}
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium">Show announcement bar</p>
+            <p className="text-xs text-muted-foreground mt-0.5">When off, the bar is hidden for all visitors.</p>
+          </div>
+          <button
+            onClick={() => setEnabled((v) => !v)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-colors text-sm font-medium ${
+              enabled
+                ? "border-green-200 bg-green-50 text-green-700"
+                : "border-border text-muted-foreground hover:bg-secondary"
+            }`}
+          >
+            {enabled
+              ? <><ToggleRight className="w-4 h-4" />Enabled</>
+              : <><ToggleLeft className="w-4 h-4" />Disabled</>}
+          </button>
+        </div>
+
+        {/* Message */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
+            Message
+          </label>
+          <input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Paleti is back! Join us for an intimate evening of music."
+            className={inputCls}
+          />
+        </div>
+
+        {/* Button */}
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
+              Button Label
+            </label>
+            <input
+              value={buttonText}
+              onChange={(e) => setButtonText(e.target.value)}
+              placeholder="Register →"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
+              Button URL
+            </label>
+            <div className="relative">
+              <input
+                value={buttonUrl}
+                onChange={(e) => setButtonUrl(e.target.value)}
+                placeholder="https://paleti.nepalaya.com.np/..."
+                className={`${inputCls} pr-9`}
+              />
+              {buttonUrl && (
+                <a href={buttonUrl} target="_blank" rel="noopener noreferrer"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Live preview */}
+        {message && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Preview</p>
+            <div
+              className="rounded-xl overflow-hidden"
+              style={{
+                backgroundColor: "#C04820",
+                backgroundImage: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><g transform="translate(50,50)" opacity="0.13" fill="white"><circle r="46" fill="none" stroke="white" stroke-width="0.7"/><circle r="34" fill="none" stroke="white" stroke-width="0.5"/><circle r="22" fill="none" stroke="white" stroke-width="0.7"/><circle r="10" fill="none" stroke="white" stroke-width="0.5"/><circle r="2.5" fill="white" opacity="0.6"/><ellipse rx="3" ry="11" transform="rotate(0) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(45) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(90) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(135) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(180) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(225) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(270) translate(0,-35)" opacity="0.5"/><ellipse rx="3" ry="11" transform="rotate(315) translate(0,-35)" opacity="0.5"/></g></svg>')}") `,
+                backgroundSize: "100px 100px",
+              }}
+            >
+              <div className="relative flex items-center justify-center gap-3 px-10 py-2.5">
+                <p className="text-white text-sm font-medium text-center">{message}</p>
+                {buttonText && (
+                  <span className="shrink-0 inline-flex items-center px-4 py-1.5 rounded-full bg-white/15 border border-white/30 text-white text-xs font-semibold whitespace-nowrap">
+                    {buttonText}
+                  </span>
+                )}
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
+                  <X className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Button onClick={handleSave} disabled={saving} size="sm">
+          {saving && <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />}
+          Save & Publish
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 // ─── Admin Dashboard ──────────────────────────────────────────────────────────
 
 const AdminDashboard = ({ user }: { user: User }) => {
+  const [activeView, setActiveView] = useState<"bookings" | "announcement">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState<"all" | BookingStatus>("all");
@@ -752,6 +916,22 @@ const AdminDashboard = ({ user }: { user: User }) => {
             <span className="text-primary-foreground/50 text-sm hidden sm:block">Admin</span>
           </div>
           <div className="flex items-center gap-3">
+            <div className="flex items-center bg-primary-foreground/10 rounded-lg p-0.5 gap-0.5">
+              <button
+                onClick={() => setActiveView("bookings")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeView === "bookings" ? "bg-primary-foreground/20 text-primary-foreground" : "text-primary-foreground/50 hover:text-primary-foreground/70"}`}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Bookings</span>
+              </button>
+              <button
+                onClick={() => setActiveView("announcement")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeView === "announcement" ? "bg-primary-foreground/20 text-primary-foreground" : "text-primary-foreground/50 hover:text-primary-foreground/70"}`}
+              >
+                <Megaphone className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Announcement</span>
+              </button>
+            </div>
             <span className="text-xs text-primary-foreground/40 hidden md:block">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={() => signOut(auth)}
               className="text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10">
@@ -762,6 +942,8 @@ const AdminDashboard = ({ user }: { user: User }) => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {activeView === "announcement" && <AnnouncementPanel />}
+        {activeView === "bookings" && <>
 
         {/* Booking Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -985,6 +1167,7 @@ const AdminDashboard = ({ user }: { user: User }) => {
         </div>
       </main>
 
+        </>}
       <AddBookingDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} approvedDates={approvedDates} />
       {detailBooking && (
         <BookingDetailModal
