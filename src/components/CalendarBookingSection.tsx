@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
-import { CalendarIcon, Send, ChevronDown, Minus, Plus } from "lucide-react";
+import { CalendarIcon, Send, ChevronDown, Minus, Plus, MapPin } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { db } from "@/lib/firebase";
@@ -152,7 +152,6 @@ const CalendarBookingSection = () => {
             <div className="mt-8 space-y-4">
               {[
                 { label: "Capacity",     value: "Up to 80 guests" },
-                { label: "Location",     value: "Kalikasthan, Kathmandu" },
                 { label: "Availability", value: "Subject to schedule" },
                 { label: "Confirmation", value: "Within 24–48 hours" },
               ].map(({ label, value }) => (
@@ -164,6 +163,23 @@ const CalendarBookingSection = () => {
                   </div>
                 </div>
               ))}
+
+              {/* Location — with Maps link */}
+              <div className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                <div>
+                  <p className="text-xs text-white/30 uppercase tracking-wide">Location</p>
+                  <a
+                    href="https://maps.app.goo.gl/j1RMyeUB19DXYqor7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-primary transition-colors mt-0.5 group/loc"
+                  >
+                    Kalikasthan, Kathmandu
+                    <MapPin className="w-3.5 h-3.5 shrink-0 opacity-50 group-hover/loc:opacity-100 transition-opacity" />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <p className="mt-10 text-xs text-white/25 leading-relaxed">
