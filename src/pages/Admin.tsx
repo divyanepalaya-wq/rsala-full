@@ -1165,9 +1165,9 @@ const AdminDashboard = ({ user }: { user: User }) => {
             </div>
           )}
         </div>
+        </>}
       </main>
 
-        </>}
       <AddBookingDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} approvedDates={approvedDates} />
       {detailBooking && (
         <BookingDetailModal
