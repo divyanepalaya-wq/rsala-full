@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 
 const images = [
-  { src: "/gallery/IMG_8265.jpg",       alt: "Singer in performance at r-sala" },
-  { src: "/gallery/IMG_4675.jpg",       alt: "Live band session at r-sala" },
-  { src: "/gallery/paleti-session.jpg", alt: "Paleti music session at r-sala" },
-  { src: "/gallery/IMG_0515.jpg",       alt: "Full ensemble performance at r-sala" },
-  { src: "/gallery/auditorium-side.jpg",alt: "r-sala auditorium space" },
-  { src: "/gallery/IMG_0812.jpg",       alt: "Book launch at r-sala" },
-  { src: "/gallery/IMG_4215.jpg",       alt: "Book launch event at r-sala" },
+  { src: "/gallery/rsala-audience33.jpeg", alt: "r-sala community outside the venue" },
+  { src: "/gallery/IMG_8265.jpg",          alt: "Singer in performance at r-sala" },
+  { src: "/gallery/rsala-audience.jpeg",   alt: "Audience at an r-sala event" },
+  { src: "/gallery/IMG_4675.jpg",          alt: "Live band session at r-sala" },
+  { src: "/gallery/IMG_0515.jpg",          alt: "Full ensemble performance at r-sala" },
+  { src: "/gallery/paleti-session.jpg",    alt: "Paleti music session at r-sala" },
+  { src: "/gallery/IMG_0812.jpg",          alt: "Book launch at r-sala" },
+  { src: "/gallery/rsala-audience2.jpeg",  alt: "Community gathering at r-sala" },
+  { src: "/gallery/IMG_4215.jpg",          alt: "Book launch event at r-sala" },
+  { src: "/gallery/auditorium-side.jpg",   alt: "r-sala auditorium space" },
 ];
 
 const GallerySection = () => {
@@ -31,9 +34,9 @@ const GallerySection = () => {
               The Space &amp; Community
             </h2>
           </div>
-          <span className="text-sm text-muted-foreground hidden sm:block tabular-nums">
+          {/* <span className="text-sm text-muted-foreground hidden sm:block tabular-nums">
             {images.length} moments
-          </span>
+          </span> */}
         </motion.div>
 
         {/* Masonry columns — images keep their natural ratios */}
@@ -42,7 +45,7 @@ const GallerySection = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="columns-2 md:columns-3 gap-2 md:gap-2.5"
+          className="columns-2 md:columns-4 gap-2 md:gap-2"
         >
           {images.map((img, i) => (
             <div
