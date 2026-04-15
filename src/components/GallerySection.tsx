@@ -1,51 +1,65 @@
 import { motion } from "framer-motion";
 
-const sectionReveal = {
-  initial: { opacity: 0, y: 12 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
-};
-
 const images = [
-  { src: "/gallery/paleti-session.jpg", alt: "Paleti music session at r-sala", span: true },
-  { src: "/gallery/auditorium-side.jpg", alt: "r-sala auditorium stage and lighting" },
-  { src: "/gallery/IMG_0515.jpg", alt: "r-sala venue photo 1" },
-  { src: "/gallery/IMG_0812.jpg", alt: "r-sala venue photo 2" },
-  { src: "/gallery/IMG_4215.jpg", alt: "r-sala venue photo 3" },
-  { src: "/gallery/IMG_4675.jpg", alt: "r-sala venue photo 4" },
-  { src: "/gallery/IMG_8265.jpg", alt: "r-sala venue photo 5" },
+  { src: "/gallery/IMG_8265.jpg",       alt: "Singer in performance at r-sala" },
+  { src: "/gallery/IMG_4675.jpg",       alt: "Live band session at r-sala" },
+  { src: "/gallery/paleti-session.jpg", alt: "Paleti music session at r-sala" },
+  { src: "/gallery/IMG_0515.jpg",       alt: "Full ensemble performance at r-sala" },
+  { src: "/gallery/auditorium-side.jpg",alt: "r-sala auditorium space" },
+  { src: "/gallery/IMG_0812.jpg",       alt: "Book launch at r-sala" },
+  { src: "/gallery/IMG_4215.jpg",       alt: "Book launch event at r-sala" },
 ];
 
 const GallerySection = () => {
   return (
     <section id="gallery" className="py-10 md:py-16 bg-background">
       <div className="container mx-auto px-6">
-        <motion.div {...sectionReveal} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl mb-4">The Space</h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            A glimpse into the vibrant, intimate atmosphere of r-sala.
-          </p>
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="flex items-end justify-between mb-6 md:mb-8"
+        >
+          <div>
+            <span className="text-xs uppercase tracking-widest text-primary font-semibold">
+              Gallery
+            </span>
+            <h2 className="text-3xl md:text-4xl mt-1">
+              The Space &amp; Community
+            </h2>
+          </div>
+          <span className="text-sm text-muted-foreground hidden sm:block tabular-nums">
+            {images.length} moments
+          </span>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        {/* Masonry columns — images keep their natural ratios */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="columns-2 md:columns-3 gap-2 md:gap-2.5"
+        >
           {images.map((img, i) => (
-            <motion.div
+            <div
               key={img.src}
-              {...sectionReveal}
-              transition={{ ...sectionReveal.transition, delay: i * 0.07 }}
-              className={`rounded-2xl overflow-hidden shadow-soft ${img.span ? "col-span-2" : ""}`}
+              className="break-inside-avoid mb-2 md:mb-2.5 overflow-hidden rounded group cursor-zoom-in"
             >
               <img
                 src={img.src}
                 alt={img.alt}
-                className={`w-full object-cover ${img.span ? "aspect-[16/9]" : "aspect-square"}`}
-                loading={i === 0 ? "eager" : "lazy"}
+                className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                loading={i < 2 ? "eager" : "lazy"}
                 decoding="async"
               />
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
+
       </div>
     </section>
   );
