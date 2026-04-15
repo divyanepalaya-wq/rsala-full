@@ -133,23 +133,52 @@ const CalendarBookingSection = () => {
     "w-full min-h-[44px] rounded-lg border border-input bg-background px-4 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary";
 
   return (
-    <section id="booking" className="py-10 md:py-16 bg-primary/5">
+    <section id="booking" className="py-10 md:py-16 bg-foreground">
       <div className="container mx-auto px-6">
-        <motion.div {...sectionReveal} className="text-center mb-8">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            Reservations
-          </span>
-          <h2 className="text-3xl md:text-4xl mb-4">Book the Venue</h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Fill out the form below and we'll confirm your date as soon as possible.
-          </p>
-        </motion.div>
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-10 lg:gap-16 items-start">
 
-        <motion.form
-          {...sectionReveal}
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto rounded-2xl bg-card shadow-elevated p-8 md:p-10 space-y-6"
-        >
+          {/* Left — context panel */}
+          <motion.div {...sectionReveal} className="lg:pt-2">
+            <span className="text-xs uppercase tracking-widest text-primary font-semibold">
+              Reservations
+            </span>
+            <h2 className="text-3xl md:text-4xl mt-2 text-white">
+              Reserve r-sala.
+            </h2>
+            <p className="text-white/50 mt-4 text-sm leading-relaxed">
+              Fill out the form and we'll confirm your date within 24–48 hours.
+            </p>
+
+            <div className="mt-8 space-y-4">
+              {[
+                { label: "Capacity",     value: "Up to 80 guests" },
+                { label: "Location",     value: "Thamel, Kathmandu" },
+                { label: "Availability", value: "Subject to schedule" },
+                { label: "Confirmation", value: "Within 24–48 hours" },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                  <div>
+                    <p className="text-xs text-white/30 uppercase tracking-wide">{label}</p>
+                    <p className="text-sm text-white/70 mt-0.5">{value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-10 text-xs text-white/25 leading-relaxed">
+              r-sala hosts concerts, book launches, talks, workshops, screenings, and more.
+              Managed by Nepa-laya.
+            </p>
+          </motion.div>
+
+          {/* Right — form on white card */}
+          <motion.form
+            {...sectionReveal}
+            transition={{ ...sectionReveal.transition, delay: 0.1 }}
+            onSubmit={handleSubmit}
+            className="rounded-2xl bg-background p-7 md:p-8 space-y-6"
+          >
           {/* Name & Email */}
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
@@ -332,7 +361,9 @@ const CalendarBookingSection = () => {
               ? <span className="animate-pulse">Submitting…</span>
               : <><Send className="w-4 h-4" />Submit Request</>}
           </button>
-        </motion.form>
+          </motion.form>
+
+        </div>{/* /grid */}
       </div>
     </section>
   );
