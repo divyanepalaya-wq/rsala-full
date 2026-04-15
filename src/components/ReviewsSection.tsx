@@ -37,7 +37,7 @@ const reviews = [
     stars: 5,
     date: "1 year ago",
     text: "Nepa~laya in Kathmandu, Kalikasthan, offers a comprehensive cultural experience. Its facilities include a state-of-the-art live music venue (Paleti), an intimate 80-seat theater, a Mokka cafe providing high-quality coffee and pastries, and a bookshop featuring Nepa~laya publications. The venue actively promotes local and international artists and authors through music, literature, and independent film screenings. A visit is highly recommended for anyone in Kathmandu.",
-    photos: null,
+    photos: ["/reviews/bikeshphoto1.png", "/reviews/bikeshphoto2.png", "/reviews/bikeshphoto3.png"],
   },
   {
     name: "Kriti Rajkarnikar",
@@ -105,6 +105,15 @@ const ReviewsSection = () => (
             </div>
           </div>
           <p className="text-sm text-foreground/70 leading-relaxed">{reviews[0].text}</p>
+          {/* Fixed-height strip — handles any aspect ratio cleanly */}
+          <div className="flex gap-2 mt-1">
+            {reviews[0].photos!.map((src, i) => (
+              <div key={i} className="flex-1 h-28 rounded-lg overflow-hidden">
+                <img src={src} alt={`Photo by ${reviews[0].name}`}
+                  className="w-full h-full object-cover object-center" loading="lazy" />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Right column — Kriti + Shiva */}
@@ -141,11 +150,11 @@ const ReviewsSection = () => (
             </div>
             <p className="text-sm text-foreground/70">{reviews[2].text}</p>
             {reviews[2].photos && (
-              <div className="grid grid-cols-3 gap-1.5 mt-1">
+              <div className="flex gap-2 mt-1">
                 {reviews[2].photos.map((src, i) => (
-                  <div key={i} className="rounded-lg overflow-hidden aspect-square">
+                  <div key={i} className="flex-1 h-20 rounded-lg overflow-hidden">
                     <img src={src} alt={`Photo by ${reviews[2].name}`}
-                      className="w-full h-full object-cover" loading="lazy" />
+                      className="w-full h-full object-cover object-center" loading="lazy" />
                   </div>
                 ))}
               </div>
