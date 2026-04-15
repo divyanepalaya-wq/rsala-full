@@ -130,7 +130,9 @@ const CalendarBookingSection = () => {
   };
 
   const inputClass =
-    "w-full min-h-[44px] rounded-lg border border-input bg-background px-4 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary";
+    "w-full min-h-[44px] rounded-lg border border-input bg-secondary px-4 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-background";
+
+  const labelClass = "block text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-2";
 
   return (
     <section id="booking" className="py-10 md:py-16 bg-foreground">
@@ -184,7 +186,6 @@ const CalendarBookingSection = () => {
 
             <p className="mt-10 text-xs text-white/25 leading-relaxed">
               r-sala hosts concerts, book launches, talks, workshops, screenings, and more.
-              Managed by Nepa-laya.
             </p>
           </motion.div>
 
@@ -195,15 +196,21 @@ const CalendarBookingSection = () => {
             onSubmit={handleSubmit}
             className="rounded-2xl bg-background p-7 md:p-8 space-y-6"
           >
+          {/* Form header */}
+          <div className="pb-5 border-b border-border">
+            <span className="text-xs uppercase tracking-widest text-primary font-semibold">Booking Request</span>
+            <p className="text-sm text-muted-foreground mt-1">Submit your details and we'll get back to you shortly.</p>
+          </div>
+
           {/* Name & Email */}
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Full Name *</label>
+              <label className={labelClass}>Full Name *</label>
               <input type="text" value={name} onChange={(e) => setName(e.target.value)}
                 required placeholder="Your name" className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Email</label>
+              <label className={labelClass}>Email</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com" className={inputClass} />
             </div>
@@ -212,7 +219,7 @@ const CalendarBookingSection = () => {
           {/* Phone & Event Type */}
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Phone *</label>
+              <label className={labelClass}>Phone *</label>
               <input type="tel" value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 onBlur={() => setPhoneTouched(true)}
@@ -225,7 +232,7 @@ const CalendarBookingSection = () => {
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Event Type *</label>
+              <label className={labelClass}>Event Type *</label>
               <select value={eventType} onChange={(e) => setEventType(e.target.value)}
                 required className={inputClass}>
                 <option value="">Select event type</option>
@@ -236,7 +243,7 @@ const CalendarBookingSection = () => {
 
           {/* Date Picker */}
           <div>
-            <label className="block text-sm font-medium mb-1.5">Booking Date *</label>
+            <label className={labelClass}>Booking Date *</label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline"
@@ -257,11 +264,11 @@ const CalendarBookingSection = () => {
           </div>
 
           {/* ── Services — compact collapsible ───────────────────────── */}
-          <div className="rounded-xl border border-border overflow-hidden">
+          <div className="rounded-xl bg-secondary overflow-hidden">
 
             {/* Hall Duration — always visible */}
             <div className="p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+              <p className={`${labelClass} mb-3`}>
                 Hall Rental *
               </p>
               <div className="grid grid-cols-2 gap-2.5">
@@ -270,8 +277,8 @@ const CalendarBookingSection = () => {
                     className={cn(
                       "rounded-lg border-2 p-3.5 text-left transition-all duration-150",
                       services.hall_duration === dur
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/40 bg-background"
+                        ? "border-primary bg-primary/10 shadow-sm"
+                        : "border-border bg-background hover:border-primary/50"
                     )}>
                     <div className="flex items-center gap-2 mb-0.5">
                       <div className={cn("w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
@@ -292,7 +299,7 @@ const CalendarBookingSection = () => {
             <button
               type="button"
               onClick={() => setAddonsOpen((o) => !o)}
-              className="w-full flex items-center justify-between px-4 py-3 border-t border-border text-sm hover:bg-secondary/50 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 border-t border-border/60 text-sm hover:bg-black/5 transition-colors"
             >
               <span className="text-muted-foreground">
                 {selectedAddonCount > 0
@@ -359,12 +366,12 @@ const CalendarBookingSection = () => {
             </AnimatePresence>
 
             {/* Estimated cost — always visible */}
-            <div className="flex items-center justify-between px-4 py-3.5 bg-primary/5 border-t border-primary/10">
+            <div className="flex items-center justify-between px-4 py-4 bg-foreground border-t border-border/60 rounded-b-xl">
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Estimated Cost</p>
-                <p className="text-[11px] text-muted-foreground/70">May vary based on final requirements</p>
+                <p className="text-xs uppercase tracking-widest font-semibold text-white/40">Estimated Cost</p>
+                <p className="text-[11px] text-white/25 mt-0.5">May vary based on final requirements</p>
               </div>
-              <p className="text-xl font-semibold tabular-nums text-primary">
+              <p className="text-2xl font-bold tabular-nums text-primary">
                 रू {estimatedCost.toLocaleString()}
               </p>
             </div>
